@@ -36,11 +36,24 @@
       "estimated_duration": 15,
       "minimal_possible_solve_time": null,
       "content": "# Find the flag\n\nThe **server** machine holds a file called `flag.txt`.\n\nFrom your client machine, reach the server and read that file. Submit its contents as your answer.\n\nThe server is at `192.168.20.5`. Your client is at `192.168.30.5` — the two sit on different network segments, so your traffic crosses the routers between them.",
-      "answer": "NCSC{replace-this-with-your-own-flag}",
+      "answer": "NCSC{cr0ss-network-r3ach}",
       "answer_variable_name": null,
-      "solution": "From the client, connect to the server at 192.168.20.5 and read /root/flag.txt. Root privileges are required.",
+      "solution": "From the client console: ssh participant@192.168.20.5 with the lab password, then run sudo cat /root/flag.txt. The hop crosses office-router and dmz-router.",
       "solution_penalized": true,
-      "hints": [],
+      "hints": [
+        {
+          "title": "Where do I look?",
+          "content": "The flag is not on the client. It is on the **server** at 192.168.20.5 - a different network, reached through the routers.",
+          "hint_penalty": 10,
+          "order": 0
+        },
+        {
+          "title": "I can reach it but cannot read it",
+          "content": "The file is /root/flag.txt and only root can read it. The `participant` account exists on the server too and has sudo. Same password you used on the client.",
+          "hint_penalty": 20,
+          "order": 1
+        }
+      ],
       "incorrect_answer_limit": 5,
       "attachments": [],
       "max_score": 100,

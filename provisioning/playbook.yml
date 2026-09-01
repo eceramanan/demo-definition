@@ -33,10 +33,39 @@
     - name: Place the challenge flag
       copy:
         dest: /root/flag.txt
-        content: "NCSC{replace-this-with-your-own-flag}\n"
+        content: "NCSC{cr0ss-network-r3ach}\n"
         owner: root
         group: root
         mode: '0600'
+
+    # The flag is root-only by design: reading it is the exercise. That needs an
+    # account on this host, and server-switch is accessible_by_user: False, so the
+    # platform never creates one here. Same throwaway lab credential as the client.
+    - name: Create the participant account
+      user:
+        name: participant
+        password: "{{ 'ChangeMe123' | password_hash('sha512') }}"
+        groups: sudo
+        append: yes
+        shell: /bin/bash
+        create_home: yes
+
+    # Ubuntu cloud images ship PasswordAuthentication no, so the hop in from the
+    # client would fail publickey-only. The participant has the lab password, no key.
+    - name: Allow password SSH for the lab account
+      copy:
+        dest: /etc/ssh/sshd_config.d/99-lab.conf
+        content: "PasswordAuthentication yes\n"
+        owner: root
+        group: root
+        mode: '0644'
+      notify: restart ssh
+
+  handlers:
+    - name: restart ssh
+      service:
+        name: ssh
+        state: restarted
 
 - name: Set up the client
   hosts: client
