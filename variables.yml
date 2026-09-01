@@ -1,0 +1,24 @@
+# APG variables — OPTIONAL.
+#
+# These generate a different value per sandbox, so each participant gets a
+# different answer and answers cannot be shared between them. Required only for
+# adaptive trainings; a plain linear training works without this file.
+#
+# Leave this as-is for the first build. Turn it on only once a plain linear
+# training runs end to end, and remember that using a variable here means
+# referencing it from both playbook.yml and training.json.
+#
+# Reference:
+# https://docs.platform.cyberrange.cz/user-guide-advanced/sandboxes/apg-variables/
+#
+# Example — the vendor demo's variables:
+#
+# telnet_port:
+#     type: port
+#     min: 1500
+#
+# alice_flag:
+#     type: text
+#
+# root_flag:
+#     type: text

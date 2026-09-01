@@ -1,0 +1,90 @@
+# NCSC Cyber Drill — demo sandbox definition
+#
+# Based on cyberrangecz/library-demo-training, adapted for our AWS deployment.
+#
+# Two deliberate changes from the vendor original:
+#
+#   1. Router addresses moved from .1 to .254. AWS reserves the first addresses
+#      in every subnet and routes through .1 itself — see Issue 4 in the
+#      deployment runbook. Forking the vendor repo unchanged inherits the broken
+#      value.
+#
+#   2. Two routers instead of one, each owning its own network. The vendor demo
+#      uses a single router for both networks. Splitting them means this first
+#      build also answers the open question about whether multi-router
+#      topologies provision correctly on our AWS backend.
+#
+# Platform rule: a network connects to exactly ONE router, but a router may own
+# several networks. Routers reach each other over the platform's WAN.
+
+name: ncsc-demo-definition
+
+hosts:
+  - name: server
+    base_box:
+      # Still to fill in: run ../find-image.sh ubuntu-noble-24.04 and take a
+      # plain amd64 server image — NOT an eks/, pro/ or minimal variant, and
+      # NOT arm64 (a t3 instance cannot boot an arm64 image).
+      image: REPLACE-WITH-UBUNTU-AMI-ID
+      man_user: ubuntu
+    flavor: t3.small
+
+  - name: client
+    base_box:
+      # Still to fill in: run ../find-image.sh ubuntu-noble-24.04 and take a
+      # plain amd64 server image — NOT an eks/, pro/ or minimal variant, and
+      # NOT arm64 (a t3 instance cannot boot an arm64 image).
+      image: REPLACE-WITH-UBUNTU-AMI-ID
+      man_user: ubuntu
+    flavor: t3.small
+
+routers:
+  # t3.xlarge, not t3.small: a router needs one interface per attached network
+  # plus the platform's own. t3.small allows only 3 and the build fails with
+  # AttachmentLimitExceeded — see Issue 5 in the deployment runbook. Adding
+  # networks to a router raises its interface count, so raise the size with it.
+  - name: dmz-router
+    base_box:
+      # debian-12-amd64-20260821-2577, published 2026-08-21, status available.
+      # Looked up from the platform's own image list. Confirm it still resolves
+      # before a build — run ../find-image.sh debian-12
+      image: ami-04e79831560c3834f
+      man_user: debian
+    flavor: t3.xlarge
+
+  - name: office-router
+    base_box:
+      # debian-12-amd64-20260821-2577, published 2026-08-21, status available.
+      # Looked up from the platform's own image list. Confirm it still resolves
+      # before a build — run ../find-image.sh debian-12
+      image: ami-04e79831560c3834f
+      man_user: debian
+    flavor: t3.xlarge
+
+networks:
+  - name: server-switch
+    cidr: 192.168.20.0/24
+    accessible_by_user: False
+
+  - name: client-switch
+    cidr: 192.168.30.0/24
+
+net_mappings:
+  - host: server
+    network: server-switch
+    ip: 192.168.20.5
+
+  - host: client
+    network: client-switch
+    ip: 192.168.30.5
+
+router_mappings:
+  - router: dmz-router
+    network: server-switch
+    ip: 192.168.20.254
+
+  - router: office-router
+    network: client-switch
+    ip: 192.168.30.254
+
+groups: []

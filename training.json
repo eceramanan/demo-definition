@@ -1,0 +1,54 @@
+{
+  "title": "NCSC Cyber Drill — Demo",
+  "description": "A minimal scored exercise used to validate the platform end to end.",
+  "prerequisites": [],
+  "outcomes": [
+    "Reach a sandbox machine through the browser console",
+    "Locate a file on a remote host",
+    "Submit a scored answer"
+  ],
+  "state": "UNRELEASED",
+  "estimated_duration": 20,
+  "variant_sandboxes": false,
+  "levels": [
+    {
+      "title": "Welcome",
+      "level_type": "INFO_LEVEL",
+      "order": 0,
+      "estimated_duration": 0,
+      "minimal_possible_solve_time": null,
+      "content": "# NCSC Cyber Drill — Demo\n\nThis short exercise checks that everything works: your environment, your access to it, and scoring.\n\n| Level | Name | Type |\n|:--:|---|---|\n| 1. | Welcome | Info |\n| 2. | Reach your environment | Access |\n| 3. | Find the flag | Training |\n\nYou have your own private copy of this network. Nothing you do affects anyone else."
+    },
+    {
+      "title": "Reach your environment",
+      "level_type": "ACCESS_LEVEL",
+      "order": 1,
+      "estimated_duration": 5,
+      "minimal_possible_solve_time": null,
+      "passkey": "connected",
+      "cloud_content": "# Connect through the browser\n\nOpen the topology view, select the **client** machine, and choose **Open console in new window**.\n\nIf the topology view is blank, refresh the page.\n\nLog in with:\n\n- username: `participant`\n- password: `ChangeMe123`\n\nWhen you have a shell prompt, submit the passkey `connected` to continue.",
+      "local_content": "# Connect over SSH\n\nSSH access is available but is not used in this exercise. Use the browser console described in the other tab."
+    },
+    {
+      "title": "Find the flag",
+      "level_type": "TRAINING_LEVEL",
+      "order": 2,
+      "estimated_duration": 15,
+      "minimal_possible_solve_time": null,
+      "content": "# Find the flag\n\nThe **server** machine holds a file called `flag.txt`.\n\nFrom your client machine, reach the server and read that file. Submit its contents as your answer.\n\nThe server is at `192.168.20.5`. Your client is at `192.168.30.5` — the two sit on different network segments, so your traffic crosses the routers between them.",
+      "answer": "NCSC{replace-this-with-your-own-flag}",
+      "answer_variable_name": null,
+      "solution": "From the client, connect to the server at 192.168.20.5 and read /root/flag.txt. Root privileges are required.",
+      "solution_penalized": true,
+      "hints": [],
+      "incorrect_answer_limit": 5,
+      "attachments": [],
+      "max_score": 100,
+      "variant_answers": false,
+      "reference_solution": null,
+      "mitre_techniques": [],
+      "expected_commands": [],
+      "commands_required": false
+    }
+  ]
+}

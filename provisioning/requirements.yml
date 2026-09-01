@@ -1,0 +1,19 @@
+# Ansible Galaxy roles pulled before provisioning runs.
+#
+# Deliberately empty for the first build — see the note at the top of
+# playbook.yml. Every entry here is a download the sandbox must succeed at, and
+# each one is a new way for a build to fail.
+#
+# The vendor's own demo pulls roles such as disable-qxl, sandbox-logging and
+# user-access from the cyberrangecz organisation. Add them one at a time, and
+# rebuild after each, so a failure points at a single cause.
+#
+# Example:
+#
+# roles:
+#   - name: sandbox-logging
+#     src: https://github.com/cyberrangecz/ansible-role-sandbox-logging.git
+#     scm: git
+#     version: master
+
+roles: []
