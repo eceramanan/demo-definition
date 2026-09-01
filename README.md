@@ -123,7 +123,8 @@ verified against a live import, and a malformed level fails the upload.
 
 - `training.json` must be **uploaded before** the training definition can be created. The
   definition cannot exist without it.
-- Pool size can be increased but **never reduced** — to shrink one, delete and recreate.
+- Pool size can be changed freely while the pool is empty, but cannot be reduced below the
+  number of sandboxes already allocated. Settle the size before allocating.
 - `ChangeMe123` in the playbook is a throwaway lab credential, not a secret. Change it before
   any real drill and never reuse the pattern outside a disposable sandbox.
 
