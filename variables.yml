@@ -22,3 +22,11 @@
 #
 # root_flag:
 #     type: text
+
+# An empty mapping, not an empty file. This file is documented as optional, but
+# the platform's answer generator still parses it: a comments-only file loads as
+# None and manage_answers.py crashes with
+#   TypeError: 'NoneType' object is not iterable
+# (generator/var_generator.py, `for var in variables`). `{}` gives it something
+# iterable with no variables in it. Replace with real APG variables when needed.
+{}
