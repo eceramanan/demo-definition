@@ -51,7 +51,15 @@ routers:
       # Looked up from the platform's own image list. Confirm it still resolves
       # before a build — run ../find-image.sh debian-12
       image: ami-04e79831560c3834f
-      man_user: debian
+      # admin, not debian. Debian's official AWS AMIs create `admin` as the
+      # cloud-init default user; `debian` is the convention for the generic /
+      # OpenStack qcow2 images, which is what the vendor library assumes.
+      # Getting this wrong leaves the node up with sshd answering but no
+      # authorized_keys for the user Ansible tries, so the networking stage
+      # fails with `Permission denied (publickey)` and the router never gets
+      # its interfaces, routes or ip_forward — which then also fails the
+      # sandbox connectivity test on every host behind it.
+      man_user: admin
     flavor: t3.xlarge
 
   - name: office-router
@@ -60,7 +68,15 @@ routers:
       # Looked up from the platform's own image list. Confirm it still resolves
       # before a build — run ../find-image.sh debian-12
       image: ami-04e79831560c3834f
-      man_user: debian
+      # admin, not debian. Debian's official AWS AMIs create `admin` as the
+      # cloud-init default user; `debian` is the convention for the generic /
+      # OpenStack qcow2 images, which is what the vendor library assumes.
+      # Getting this wrong leaves the node up with sshd answering but no
+      # authorized_keys for the user Ansible tries, so the networking stage
+      # fails with `Permission denied (publickey)` and the router never gets
+      # its interfaces, routes or ip_forward — which then also fails the
+      # sandbox connectivity test on every host behind it.
+      man_user: admin
     flavor: t3.xlarge
 
 networks:
