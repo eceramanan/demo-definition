@@ -27,11 +27,11 @@ hosts:
       # not images-testing/, not -daily-, not arm64 (a t3 instance cannot boot
       # an arm64 image). Re-check with ../search-images.sh ubuntu/images noble amd64
       image: ami-0b9251aaddf73d3c6
-      # Both spellings on purpose: this platform's docs specify mgmt_user, while
-      # the vendor library still writes man_user. Unknown keys are tolerated, and
-      # the values here match the image default anyway, so setting both is free.
+      # mgmt_user, not man_user. man_user is the deprecated spelling the vendor
+      # library still uses; this platform rejects a definition carrying both
+      # ("Deprecated attribute man_user is mutually exclusive with the new
+      # attribute mgmt_user"), and on its own it never actually set the login.
       mgmt_user: ubuntu
-      man_user: ubuntu
     flavor: t3.small
 
   - name: client
@@ -41,11 +41,11 @@ hosts:
       # not images-testing/, not -daily-, not arm64 (a t3 instance cannot boot
       # an arm64 image). Re-check with ../search-images.sh ubuntu/images noble amd64
       image: ami-0b9251aaddf73d3c6
-      # Both spellings on purpose: this platform's docs specify mgmt_user, while
-      # the vendor library still writes man_user. Unknown keys are tolerated, and
-      # the values here match the image default anyway, so setting both is free.
+      # mgmt_user, not man_user. man_user is the deprecated spelling the vendor
+      # library still uses; this platform rejects a definition carrying both
+      # ("Deprecated attribute man_user is mutually exclusive with the new
+      # attribute mgmt_user"), and on its own it never actually set the login.
       mgmt_user: ubuntu
-      man_user: ubuntu
     flavor: t3.small
 
 routers:
@@ -67,8 +67,10 @@ routers:
       # fails with `Permission denied (publickey)` and the router never gets
       # its interfaces, routes or ip_forward — which then also fails the
       # sandbox connectivity test on every host behind it.
+      #
+      # The key name matters as much as the value: see the hosts above. Setting
+      # this under man_user changed nothing across four rebuilds.
       mgmt_user: admin
-      man_user: admin
     flavor: t3.xlarge
 
   - name: office-router
@@ -85,8 +87,10 @@ routers:
       # fails with `Permission denied (publickey)` and the router never gets
       # its interfaces, routes or ip_forward — which then also fails the
       # sandbox connectivity test on every host behind it.
+      #
+      # The key name matters as much as the value: see the hosts above. Setting
+      # this under man_user changed nothing across four rebuilds.
       mgmt_user: admin
-      man_user: admin
     flavor: t3.xlarge
 
 networks:
