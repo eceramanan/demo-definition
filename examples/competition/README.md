@@ -1,7 +1,7 @@
 # Competition example
 
 `training.json` in this directory is an alternative exercise for the same
-sandbox: four rounds, 600 points, per-competitor flags. It is not used by the
+sandbox: three scored rounds, 225 points, per-competitor flags. It is not used by the
 platform automatically - upload it as its own Linear Training Definition, the
 same way the demo one is uploaded.
 
@@ -66,6 +66,13 @@ or the home directory and the owner do not exist yet.
 - `sudo -l` as `participant` on the server lists sudo rights (round 4 needs it).
 - The client can reach `192.168.20.5` (rounds 2-4 all depend on the hop across
   office-router and dmz-router).
+
+## Platform limits worth knowing
+
+- `max_score` is capped at **100 per level**. Uploading a level worth more is
+  rejected with "Level field 'maxScore' cannot be greater than 100". Differentiate
+  rounds within that ceiling (this example uses 50 / 75 / 100) rather than by
+  scaling points up.
 
 ## Not yet proven on this platform
 

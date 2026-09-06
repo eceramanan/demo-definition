@@ -21,7 +21,7 @@
       "order": 0,
       "estimated_duration": 0,
       "minimal_possible_solve_time": null,
-      "content": "# Capture the Flag\n\nFour rounds. You have your own private copy of the network - nothing you do affects another competitor.\n\n| Round | Points | Notes |\n|---|--:|---|\n| 1. Reach your environment | 0 | Gets you in |\n| 2. Find the neighbour | 100 | Recon |\n| 3. Cross the segments | 200 | Your flag is unique to you |\n| 4. Escalate and read | 300 | Your flag is unique to you |\n\n**Scoring.** Hints cost points, shown before you open one. Revealing a solution scores the round zero. Wrong answers are limited - after five the round closes.\n\n**Flags are per competitor.** Two rounds generate a different flag in every environment, so a flag copied from another team will not score."
+      "content": "# Capture the Flag\n\nFour rounds. You have your own private copy of the network - nothing you do affects another competitor.\n\n| Round | Points | Notes |\n|---|--:|---|\n| 1. Reach your environment | 0 | Gets you in |\n| 2. Find the neighbour | 50 | Recon |\n| 3. Cross the segments | 75 | Your flag is unique to you |\n| 4. Escalate and read | 100 | Your flag is unique to you |\n\n**Scoring.** Hints cost points, shown before you open one. Revealing a solution scores the round zero. Wrong answers are limited - after five the round closes.\n\n**Flags are per competitor.** Two rounds generate a different flag in every environment, so a flag copied from another team will not score."
     },
     {
       "title": "Reach your environment",
@@ -48,19 +48,19 @@
         {
           "title": "Where do I start?",
           "content": "`ip route` shows which networks your client knows about and which gateway serves them.",
-          "hint_penalty": 10,
+          "hint_penalty": 5,
           "order": 0
         },
         {
           "title": "Narrow it down",
           "content": "The neighbouring segment is 192.168.20.0/24. Hosts in this build sit at .5 and routers at .254.",
-          "hint_penalty": 25,
+          "hint_penalty": 15,
           "order": 1
         }
       ],
       "incorrect_answer_limit": 5,
       "attachments": [],
-      "max_score": 100,
+      "max_score": 50,
       "variant_answers": false,
       "reference_solution": null,
       "mitre_techniques": [],
@@ -82,19 +82,19 @@
         {
           "title": "Same credentials",
           "content": "The `participant` account exists on the other machine too, with the same password.",
-          "hint_penalty": 20,
+          "hint_penalty": 10,
           "order": 0
         },
         {
           "title": "The command",
           "content": "`ssh participant@192.168.20.5`, then `cat round3.txt` in the home directory you land in.",
-          "hint_penalty": 50,
+          "hint_penalty": 25,
           "order": 1
         }
       ],
       "incorrect_answer_limit": 5,
       "attachments": [],
-      "max_score": 200,
+      "max_score": 75,
       "variant_answers": true,
       "reference_solution": null,
       "mitre_techniques": [],
@@ -116,19 +116,19 @@
         {
           "title": "Check your rights",
           "content": "`sudo -l` lists what your account may run as another user.",
-          "hint_penalty": 30,
+          "hint_penalty": 15,
           "order": 0
         },
         {
           "title": "The command",
           "content": "`sudo cat /root/round4.txt` - the password is the lab password you already used.",
-          "hint_penalty": 75,
+          "hint_penalty": 35,
           "order": 1
         }
       ],
       "incorrect_answer_limit": 5,
       "attachments": [],
-      "max_score": 300,
+      "max_score": 100,
       "variant_answers": true,
       "reference_solution": null,
       "mitre_techniques": [],
