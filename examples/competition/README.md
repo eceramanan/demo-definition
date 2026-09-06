@@ -33,9 +33,9 @@ The names must match `answer_variable_name` in the JSON exactly
 
 ## 2. provisioning/playbook.yml — place the flags
 
-Add to the `Set up the server` play. The answers in the JSON are placeholders
-(`NCSC{set-by-apg}`); the real value comes from the variable at build time, so
-the file and the expected answer are generated from the same source.
+Add to the `Set up the server` play. Rounds 3 and 4 carry a null answer and name an APG variable instead; the
+value is generated per sandbox at build time and written into the file below,
+so the file and the expected answer come from the same source.
 
 ```yaml
     - name: Round 3 flag, readable by the participant
@@ -69,6 +69,9 @@ or the home directory and the owner do not exist yet.
 
 ## Platform limits worth knowing
 
+- A level using `answer_variable_name` must have `answer` set to **null**.
+  A static answer alongside a variable one is rejected with "Field Correct
+  Answer - Static must be null". The value comes from APG at build time only.
 - `max_score` is capped at **100 per level**. Uploading a level worth more is
   rejected with "Level field 'maxScore' cannot be greater than 100". Differentiate
   rounds within that ceiling (this example uses 50 / 75 / 100) rather than by
