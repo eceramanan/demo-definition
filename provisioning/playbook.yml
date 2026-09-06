@@ -82,3 +82,21 @@
         append: yes
         shell: /bin/bash
         create_home: yes
+
+    # Same reason as the server: the browser console logs in over SSH with the
+    # lab password, and Ubuntu cloud images ship PasswordAuthentication no.
+    # Without this the Guacamole tunnel closes the moment the password is sent.
+    - name: Allow password SSH for the lab account
+      copy:
+        dest: /etc/ssh/sshd_config.d/99-lab.conf
+        content: "PasswordAuthentication yes\n"
+        owner: root
+        group: root
+        mode: '0644'
+      notify: restart ssh
+
+  handlers:
+    - name: restart ssh
+      service:
+        name: ssh
+        state: restarted
