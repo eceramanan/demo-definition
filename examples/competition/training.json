@@ -1,0 +1,147 @@
+{
+  "title": "NCSC Cyber Drill — Capture the Flag (example)",
+  "description": "A short competition-shaped exercise: four scored rounds on the two-network demo topology. Each competitor gets their own environment and their own flags.",
+  "prerequisites": [
+    "Basic Linux shell",
+    "ssh",
+    "Reading a routing table"
+  ],
+  "outcomes": [
+    "Enumerate a host on another segment",
+    "Move between network segments",
+    "Escalate with sudo to read a protected file"
+  ],
+  "state": "UNRELEASED",
+  "estimated_duration": 60,
+  "variant_sandboxes": true,
+  "levels": [
+    {
+      "title": "Rules and scoring",
+      "level_type": "INFO_LEVEL",
+      "order": 0,
+      "estimated_duration": 0,
+      "minimal_possible_solve_time": null,
+      "content": "# Capture the Flag\n\nFour rounds. You have your own private copy of the network - nothing you do affects another competitor.\n\n| Round | Points | Notes |\n|---|--:|---|\n| 1. Reach your environment | 0 | Gets you in |\n| 2. Find the neighbour | 100 | Recon |\n| 3. Cross the segments | 200 | Your flag is unique to you |\n| 4. Escalate and read | 300 | Your flag is unique to you |\n\n**Scoring.** Hints cost points, shown before you open one. Revealing a solution scores the round zero. Wrong answers are limited - after five the round closes.\n\n**Flags are per competitor.** Two rounds generate a different flag in every environment, so a flag copied from another team will not score."
+    },
+    {
+      "title": "Reach your environment",
+      "level_type": "ACCESS_LEVEL",
+      "order": 1,
+      "estimated_duration": 5,
+      "minimal_possible_solve_time": null,
+      "passkey": "started",
+      "cloud_content": "# Get a shell\n\nOpen the topology view, select **client**, and choose **Open console in new window**.\n\nLog in with:\n\n- username: `participant`\n- password: `ChangeMe123`\n\nWhen you have a prompt, type `started` into the **answer box on this page** - not into the terminal - to begin the clock.\n\n*If typing in the console produces stray `^C` or `^[` characters, click into the console window and tap Ctrl, Alt and Shift once each. Never Alt+Tab into it.*",
+      "local_content": "# Over SSH\n\nSSH is available but this competition is run entirely from the browser console."
+    },
+    {
+      "title": "Find the neighbour",
+      "level_type": "TRAINING_LEVEL",
+      "order": 2,
+      "estimated_duration": 15,
+      "minimal_possible_solve_time": null,
+      "content": "# Round 2 - Recon\n\nYour client sits on `192.168.30.0/24`. Another machine answers on a **different** segment.\n\nFind its IPv4 address and submit it.\n\nYou are looking for the address only, in dotted-quad form.",
+      "answer": "192.168.20.5",
+      "answer_variable_name": null,
+      "solution": "Read the routing table with `ip route`, note the gateway, and probe the neighbouring /24. The server answers on 192.168.20.5.",
+      "solution_penalized": true,
+      "hints": [
+        {
+          "title": "Where do I start?",
+          "content": "`ip route` shows which networks your client knows about and which gateway serves them.",
+          "hint_penalty": 10,
+          "order": 0
+        },
+        {
+          "title": "Narrow it down",
+          "content": "The neighbouring segment is 192.168.20.0/24. Hosts in this build sit at .5 and routers at .254.",
+          "hint_penalty": 25,
+          "order": 1
+        }
+      ],
+      "incorrect_answer_limit": 5,
+      "attachments": [],
+      "max_score": 100,
+      "variant_answers": false,
+      "reference_solution": null,
+      "mitre_techniques": [],
+      "expected_commands": [],
+      "commands_required": false
+    },
+    {
+      "title": "Cross the segments",
+      "level_type": "TRAINING_LEVEL",
+      "order": 3,
+      "estimated_duration": 15,
+      "minimal_possible_solve_time": null,
+      "content": "# Round 3 - Movement\n\nGet a shell on the machine you found in round 2, using the same lab credentials.\n\nIn that account's home directory there is a file called `round3.txt`. Submit its contents.\n\nYour flag is unique to your environment.",
+      "answer": "NCSC{set-by-apg}",
+      "answer_variable_name": "round3_flag",
+      "solution": "ssh participant@192.168.20.5 with the lab password, then `cat ~/round3.txt`. The hop crosses office-router and dmz-router.",
+      "solution_penalized": true,
+      "hints": [
+        {
+          "title": "Same credentials",
+          "content": "The `participant` account exists on the other machine too, with the same password.",
+          "hint_penalty": 20,
+          "order": 0
+        },
+        {
+          "title": "The command",
+          "content": "`ssh participant@192.168.20.5`, then `cat round3.txt` in the home directory you land in.",
+          "hint_penalty": 50,
+          "order": 1
+        }
+      ],
+      "incorrect_answer_limit": 5,
+      "attachments": [],
+      "max_score": 200,
+      "variant_answers": true,
+      "reference_solution": null,
+      "mitre_techniques": [],
+      "expected_commands": [],
+      "commands_required": false
+    },
+    {
+      "title": "Escalate and read",
+      "level_type": "TRAINING_LEVEL",
+      "order": 4,
+      "estimated_duration": 15,
+      "minimal_possible_solve_time": null,
+      "content": "# Round 4 - Escalation\n\nOn the same machine there is a second file, `/root/round4.txt`, readable only by root.\n\nRead it and submit its contents.\n\nYour flag is unique to your environment.",
+      "answer": "NCSC{set-by-apg}",
+      "answer_variable_name": "round4_flag",
+      "solution": "The participant account is in the sudo group: `sudo cat /root/round4.txt`, using the lab password when prompted.",
+      "solution_penalized": true,
+      "hints": [
+        {
+          "title": "Check your rights",
+          "content": "`sudo -l` lists what your account may run as another user.",
+          "hint_penalty": 30,
+          "order": 0
+        },
+        {
+          "title": "The command",
+          "content": "`sudo cat /root/round4.txt` - the password is the lab password you already used.",
+          "hint_penalty": 75,
+          "order": 1
+        }
+      ],
+      "incorrect_answer_limit": 5,
+      "attachments": [],
+      "max_score": 300,
+      "variant_answers": true,
+      "reference_solution": null,
+      "mitre_techniques": [],
+      "expected_commands": [],
+      "commands_required": false
+    },
+    {
+      "title": "Debrief",
+      "level_type": "INFO_LEVEL",
+      "order": 5,
+      "estimated_duration": 0,
+      "minimal_possible_solve_time": null,
+      "content": "# Finished\n\nYour score is the sum of the rounds, less any hint penalties and any round where you revealed the solution.\n\nThe organiser can see every competitor's progress, timings, hints taken and solutions revealed from the instance view, and export the results for ranking."
+    }
+  ]
+}
