@@ -50,11 +50,13 @@
         shell: /bin/bash
         create_home: yes
 
-    # Ubuntu cloud images ship PasswordAuthentication no, so the hop in from the
-    # client would fail publickey-only. The participant has the lab password, no key.
+    # Ubuntu cloud images ship PasswordAuthentication no, in
+    # /etc/ssh/sshd_config.d/60-cloudimg-settings.conf. sshd takes the FIRST
+    # value it reads for a keyword, and Include globs in lexical order, so the
+    # override has to sort before 60-. A 99- file is read last and does nothing.
     - name: Allow password SSH for the lab account
       copy:
-        dest: /etc/ssh/sshd_config.d/99-lab.conf
+        dest: /etc/ssh/sshd_config.d/01-lab.conf
         content: "PasswordAuthentication yes\n"
         owner: root
         group: root
@@ -83,12 +85,12 @@
         shell: /bin/bash
         create_home: yes
 
-    # Same reason as the server: the browser console logs in over SSH with the
-    # lab password, and Ubuntu cloud images ship PasswordAuthentication no.
-    # Without this the Guacamole tunnel closes the moment the password is sent.
+    # Same as the server, and for the same first-value-wins reason: the browser
+    # console logs in over SSH and Guacamole sends the lab password itself. If
+    # sshd refuses password auth the tunnel closes the moment it is sent.
     - name: Allow password SSH for the lab account
       copy:
-        dest: /etc/ssh/sshd_config.d/99-lab.conf
+        dest: /etc/ssh/sshd_config.d/01-lab.conf
         content: "PasswordAuthentication yes\n"
         owner: root
         group: root
