@@ -50,6 +50,26 @@
         shell: /bin/bash
         create_home: yes
 
+    # Competition flags, for examples/competition/training.json. The values come
+    # from the APG variables declared in variables.yml, so every sandbox gets a
+    # different pair and a flag copied between competitors does not score. The
+    # demo exercise ignores these files, and this exercise ignores /root/flag.txt.
+    - name: Round 3 flag, readable by the participant
+      copy:
+        dest: /home/participant/round3.txt
+        content: "{{ round3_flag }}\n"
+        owner: participant
+        group: participant
+        mode: '0644'
+
+    - name: Round 4 flag, root only
+      copy:
+        dest: /root/round4.txt
+        content: "{{ round4_flag }}\n"
+        owner: root
+        group: root
+        mode: '0600'
+
     # Ubuntu cloud images ship PasswordAuthentication no, in
     # /etc/ssh/sshd_config.d/60-cloudimg-settings.conf. sshd takes the FIRST
     # value it reads for a keyword, and Include globs in lexical order, so the

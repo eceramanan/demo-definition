@@ -23,10 +23,23 @@
 # root_flag:
 #     type: text
 
-# An empty mapping, not an empty file. This file is documented as optional, but
-# the platform's answer generator still parses it: a comments-only file loads as
-# None and manage_answers.py crashes with
+# Not an empty file, and no longer an empty mapping. A comments-only file loads
+# as None and crashes manage_answers.py with
 #   TypeError: 'NoneType' object is not iterable
-# (generator/var_generator.py, `for var in variables`). `{}` gives it something
-# iterable with no variables in it. Replace with real APG variables when needed.
-{}
+# (generator/var_generator.py, `for var in variables`).
+#
+# These two are consumed by examples/competition/training.json, whose rounds 3
+# and 4 carry a null answer and name the variable instead. Both halves are
+# required: the platform refuses a training definition naming a variable the
+# sandbox definition does not declare, and refuses a level that has both a
+# static answer and a variable one.
+#
+# APG generates a different value per sandbox, which is what stops a flag being
+# passed between competitors. provisioning/playbook.yml writes each value onto
+# the server, so the file and the expected answer come from the same source.
+
+round3_flag:
+    type: text
+
+round4_flag:
+    type: text
